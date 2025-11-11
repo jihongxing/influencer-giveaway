@@ -1,0 +1,9 @@
+{
+  "name": "performance-tester",
+  "version": "1.0.0",
+  "description": "性能测试和优化检测工具",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

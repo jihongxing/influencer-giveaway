@@ -1,0 +1,186 @@
+<!--pages/activity-detail/activity-detail.wxml-->
+<view class="container">
+  <!-- 加载中 -->
+  <loading wx:if="{{loading}}" loading="{{true}}" message="加载中..." fullscreen="{{true}}"></loading>
+
+  <!-- 错误状态 -->
+  <error-message wx:if="{{!loading && error}}" error="{{error}}" show="{{true}}" bindretry="loadActivityData"></error-message>
+
+  <!-- 活动内容 -->
+  <view class="activity-content" wx:if="{{!loading && !error && activity}}">
+    <!-- 活动头部卡片 -->
+    <view class="header-card">
+      <!-- 用户信息区 -->
+      <view class="user-section">
+        <image
+          class="user-avatar"
+          src="{{activity.influencer.avatar_url || '/images/default-avatar.png'}}"
+          mode="aspectFill"
+          binderror="handleImageError"
+          data-file-id="{{activity.influencer.avatar_url}}"
+          data-type="avatar"
+        ></image>
+        <view class="user-info">
+          <view class="user-nickname">{{activity.influencer.nickname || '用户'}}</view>
+          <view class="activity-time">{{activity.created_at}}</view>
+        </view>
+        <view class="status-badge status-{{activity.status}}">
+          {{activity.status === 'active' ? '进行中' : activity.status === 'completed' ? '已完成' : '已取消'}}
+        </view>
+      </view>
+
+      <!-- 活动标题和描述 -->
+      <view class="title-section">
+        <view class="activity-title">{{activity.title || '无标题'}}</view>
+        <view class="activity-description" wx:if="{{activity.description}}">
+          {{activity.description}}
+        </view>
+      </view>
+
+      <!-- 统计数据 -->
+      <view class="stats-row">
+        <view class="stat-box">
+          <view class="stat-number">{{activity.total_items_count || items.length}}</view>
+          <view class="stat-label">总物品</view>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-box">
+          <view class="stat-number available">{{activity.available_items_count !== undefined ? activity.available_items_count : items.length}}</view>
+          <view class="stat-label">可领取</view>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-box" wx:if="{{isOwner}}">
+          <view class="stat-number claimed">{{claimedItemsCount}}</view>
+          <view class="stat-label">已领取</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮（仅创建者可见） -->
+    <view class="action-section" wx:if="{{isOwner}}">
+      <button class="action-btn primary" bindtap="onShare">
+        <text class="btn-icon">🔗</text>
+        <text class="btn-text">分享活动</text>
+      </button>
+      <button class="action-btn secondary" bindtap="onScanQRCode">
+        <text class="btn-icon">📷</text>
+        <text class="btn-text">扫码匹配</text>
+      </button>
+      <button class="action-btn danger" bindtap="onCancelActivity" wx:if="{{activity.status === 'active'}}">
+        <text class="btn-icon">❌</text>
+        <text class="btn-text">取消活动</text>
+      </button>
+    </view>
+
+    <!-- 物品列表 -->
+    <view class="items-section">
+      <view class="section-header">
+        <view class="section-title">🎁 物品列表</view>
+        <view class="section-subtitle">{{items.length}} 件物品</view>
+      </view>
+      <view class="items-grid">
+        <view
+          class="item-card"
+          wx:for="{{items}}"
+          wx:key="item_id"
+          data-id="{{item.item_id}}"
+          bindtap="onItemTap"
+        >
+          <view class="item-image-wrapper">
+            <image
+              class="item-image"
+              src="{{item.photo_urls && item.photo_urls.length > 0 ? item.photo_urls[0] : '/images/default-item.png'}}"
+              mode="aspectFill"
+              lazy-load="{{true}}"
+              binderror="handleImageError"
+              data-file-id="{{item.photo_urls && item.photo_urls.length > 0 ? item.photo_urls[0] : ''}}"
+              data-type="item"
+              data-index="{{index}}"
+            ></image>
+            <view class="item-badge {{item.remaining_quantity > 0 ? 'available' : 'claimed'}}">
+              {{item.remaining_quantity > 0 ? '可领取' : '已领完'}}
+            </view>
+          </view>
+          <view class="item-content">
+            <view class="item-name">{{item.label || '未命名物品'}}</view>
+            <view class="item-meta">
+              <view class="item-category">🏷️ {{item.category_label || item.category || '其他'}}</view>
+              <view class="item-stock" wx:if="{{item.remaining_quantity !== undefined}}">
+                剩余 {{item.remaining_quantity}}/{{item.marker_quantity}}
+              </view>
+            </view>
+            <view class="item-bottom">
+              <view class="item-price">¥{{item.shipping_cost_estimate}}</view>
+              <view class="item-arrow">›</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 订单列表（仅创建者可见） -->
+    <view class="orders-section" wx:if="{{isOwner && orders.length > 0}}">
+      <view class="section-title">订单列表</view>
+      <view class="orders-list">
+        <view
+          class="order-card"
+          wx:for="{{orders}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onOrderTap"
+        >
+          <view class="order-header">
+            <text class="order-id">订单 #{{item.id}}</text>
+            <text class="order-status">{{item.statusText || item.order_status}}</text>
+          </view>
+          <view class="order-info">
+            <text class="order-item">{{item.itemLabel || item.item_label || '物品'}}</text>
+            <text class="order-amount">¥{{item.total_amount}}</text>
+          </view>
+          <view class="order-time">{{item.created_at}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分享模态框 -->
+  <view class="share-modal" wx:if="{{showShareModal}}" bindtap="onCloseShareModal">
+    <view class="share-content" catchtap="">
+      <view class="share-title">分享活动</view>
+      <view class="share-link">
+        <text class="link-text">{{linkId || activity.shareable_link}}</text>
+        <button class="copy-btn" bindtap="onCopyLink">复制</button>
+      </view>
+      <view class="share-qrcode" wx:if="{{activity.qr_code_url}}">
+        <image src="{{activity.qr_code_url}}" mode="aspectFit"></image>
+      </view>
+      <button class="close-btn" bindtap="onCloseShareModal">关闭</button>
+    </view>
+  </view>
+
+  <!-- 密码验证模态框 -->
+  <view class="password-modal" wx:if="{{showPasswordModal}}">
+    <view class="password-content">
+      <view class="password-title">🔒 活动需要密码</view>
+      <view class="password-hint" wx:if="{{passwordHint}}">
+        提示：{{passwordHint}}
+      </view>
+      <input 
+        class="password-input" 
+        type="text"
+        placeholder="请输入访问密码"
+        value="{{inputPassword}}"
+        bindinput="onPasswordInput"
+        maxlength="8"
+      />
+      <view class="password-error" wx:if="{{passwordError}}">
+        {{passwordError}}
+      </view>
+      <view class="password-buttons">
+        <button class="password-btn cancel" bindtap="onCancelPassword">取消</button>
+        <button class="password-btn confirm" bindtap="onConfirmPassword">确认</button>
+      </view>
+    </view>
+  </view>
+</view>
+

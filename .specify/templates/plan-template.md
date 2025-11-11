@@ -31,7 +31,18 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify compliance with FamilyAuther Constitution principles:
+
+- **Code Quality**: Planned implementation MUST meet linting, formatting, type safety, and complexity requirements. Identify any exceptions requiring justification.
+- **Testing Standards**: Test strategy MUST be defined (unit, integration, contract tests). Minimum 80% coverage target for business logic, 95% for critical paths. TDD approach MUST be followed.
+- **User Experience Consistency**: If UI changes, verify design system compliance, accessibility (WCAG 2.1 AA), responsive design, and consistent interaction patterns.
+- **Performance Requirements**: Performance targets MUST be defined:
+  - API response times (P50 <200ms, P95 <500ms, P99 <1000ms)
+  - Page load times (<2s on 3G, TTI <3s)
+  - Database query times (<100ms standard, <500ms maximum)
+  - Scalability considerations (10x current load)
+
+**Violations**: Document any principle violations in Complexity Tracking table below with justification.
 
 ## Project Structure
 

@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "首页",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50,
+  "usingComponents": {
+    "loading": "/components/loading/loading",
+    "error-message": "/components/error-message/error-message"
+  }
+}

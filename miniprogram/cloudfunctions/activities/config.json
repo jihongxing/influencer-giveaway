@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "openapi": [
+      "wxacode.getUnlimited"
+    ]
+  },
+  "env": {
+    "WECHAT_APPID": "wx28fe6d19a46e6327",
+    "WECHAT_SECRET": "789b87feaa1bc64f42489529d64b04d6"
+  }
+}
+

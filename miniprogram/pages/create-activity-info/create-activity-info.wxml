@@ -1,0 +1,203 @@
+<!--pages/create-activity-info/create-activity-info.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">创建赠送活动</text>
+  </view>
+
+  <scroll-view class="content" scroll-y>
+    <!-- 活动标题 -->
+    <view class="form-section">
+      <view class="section-title">活动标题 <text class="required">*</text></view>
+      <input 
+        class="input" 
+        placeholder="例如：春节清仓大放送" 
+        maxlength="50"
+        value="{{formData.title}}"
+        bindinput="onTitleInput"
+      />
+      <view class="input-hint">{{formData.title.length}}/50</view>
+    </view>
+
+    <!-- 活动描述 -->
+    <view class="form-section">
+      <view class="section-title">活动描述</view>
+      <textarea 
+        class="textarea" 
+        placeholder="简单介绍一下活动内容..."
+        maxlength="500"
+        value="{{formData.description}}"
+        bindinput="onDescriptionInput"
+      />
+      <view class="input-hint">{{formData.description.length}}/500</view>
+    </view>
+
+    <!-- 活动封面 -->
+    <view class="form-section">
+      <view class="section-title">活动封面（选填）</view>
+      <view class="cover-upload" bindtap="onChooseCover">
+        <image wx:if="{{formData.cover_image_url}}" src="{{formData.cover_image_url}}" class="cover-image" mode="aspectFill" />
+        <view wx:else class="upload-placeholder">
+          <text class="iconfont icon-add">+</text>
+          <text class="upload-text">点击上传</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 来源平台 -->
+    <view class="form-section">
+      <view class="section-title">来源平台 <text class="required">*</text></view>
+      <view class="radio-group">
+        <block wx:for="{{platformOptions}}" wx:key="value">
+          <view 
+            class="radio-item {{formData.source_platform === item.value ? 'active' : ''}}"
+            data-value="{{item.value}}"
+            bindtap="onPlatformChange"
+          >
+            <text>{{item.label}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 开始时间 -->
+    <view class="form-section">
+      <view class="section-title">开始时间</view>
+      <view class="switch-row">
+        <text>立即发布</text>
+        <switch 
+          checked="{{formData.is_immediate_publish}}" 
+          bindchange="onImmediatePublishChange"
+        />
+      </view>
+      <view wx:if="{{showScheduleInput}}" class="datetime-picker">
+        <view class="picker-row">
+          <picker 
+            mode="date" 
+            value="{{scheduledDate}}"
+            start="{{minDate}}"
+            bindchange="onScheduleDateChange"
+          >
+            <view class="picker-value">
+              日期：{{scheduledDate || '选择日期'}}
+            </view>
+          </picker>
+        </view>
+        <view class="picker-row">
+          <picker 
+            mode="selector" 
+            range="{{timeOptions}}"
+            value="{{scheduledTimeIndex}}"
+            bindchange="onScheduleTimeChange"
+          >
+            <view class="picker-value">
+              时间：{{timeOptions[scheduledTimeIndex] || '选择时间'}}
+            </view>
+          </picker>
+        </view>
+        <view wx:if="{{formData.scheduled_start_time}}" class="datetime-preview">
+          预约时间：{{formData.scheduled_start_time}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 访问控制 -->
+    <view class="form-section">
+      <view class="section-title">访问控制</view>
+      <view class="switch-row">
+        <text>设置访问密码</text>
+        <switch 
+          checked="{{formData.is_password_protected}}" 
+          bindchange="onPasswordProtectedChange"
+        />
+      </view>
+      <view wx:if="{{showPasswordInput}}" class="password-inputs">
+        <view class="input-row">
+          <text class="label">密码:</text>
+          <input 
+            class="input small" 
+            placeholder="4-8位字母或数字"
+            maxlength="8"
+            value="{{formData.access_password}}"
+            bindinput="onPasswordInput"
+          />
+        </view>
+        <view class="input-row">
+          <text class="label">提示:</text>
+          <input 
+            class="input small" 
+            placeholder="选填"
+            maxlength="50"
+            value="{{formData.password_hint}}"
+            bindinput="onPasswordHintInput"
+          />
+        </view>
+      </view>
+    </view>
+
+    <!-- 优选快递 -->
+    <view class="form-section">
+      <view class="section-title">优选快递</view>
+      <picker 
+        mode="selector" 
+        range="{{courierOptions}}" 
+        range-key="label"
+        value="{{formData.preferred_courier}}"
+        bindchange="onCourierChange"
+      >
+        <view class="picker-value">
+          {{courierOptions[formData.preferred_courier].label || '不指定'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 发货地址 -->
+    <view class="form-section">
+      <view class="section-title">发货地址 <text class="required">*</text></view>
+      <view class="address-box" bindtap="onChooseAddress">
+        <block wx:if="{{formData.sender_address}}">
+          <view class="address-text">
+            {{formData.sender_address.province}} {{formData.sender_address.city}} {{formData.sender_address.district}} {{formData.sender_address.street}}
+          </view>
+        </block>
+        <view wx:else class="address-placeholder">
+          <text>点击选择地址</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 发货人信息 -->
+    <view class="form-section">
+      <view class="section-title">发货人信息 <text class="required">*</text></view>
+      <view class="input-row">
+        <text class="label">姓名:</text>
+        <input 
+          class="input small" 
+          placeholder="发货人姓名"
+          value="{{formData.sender_contact_name}}"
+          bindinput="onContactNameInput"
+        />
+      </view>
+      <view class="input-row">
+        <text class="label">电话:</text>
+        <input 
+          class="input small" 
+          placeholder="手机号或固定电话（如：010-12345678）"
+          value="{{formData.sender_contact_phone}}"
+          bindinput="onContactPhoneInput"
+        />
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部按钮 -->
+  <view class="footer">
+    <button class="btn btn-cancel" bindtap="onCancel">取消</button>
+    <button 
+      class="btn btn-primary" 
+      loading="{{loading}}"
+      bindtap="onNextStep"
+    >
+      下一步：添加物品
+    </button>
+  </view>
+</view>

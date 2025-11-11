@@ -1,0 +1,158 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 顶部状态栏 -->
+  <view class="header">
+    <view class="user-section" wx:if="{{isLoggedIn && userInfo}}">
+      <image
+        class="user-avatar"
+        src="{{userInfo.avatar_url || '/images/default-avatar.png'}}"
+        mode="aspectFill"
+      ></image>
+      <view class="user-info">
+        <text class="greeting">你好，{{userInfo.nickname || '用户'}}</text>
+      </view>
+    </view>
+    <view class="login-prompt" wx:else>
+      <text class="greeting">欢迎使用闲置物品赠送平台</text>
+      <text class="login-btn" bindtap="onLogin">登录</text>
+    </view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar" bindtap="onSearch">
+    <text class="search-icon">🔍</text>
+    <text class="search-placeholder">搜索活动或用户</text>
+  </view>
+
+  <!-- 分类导航 -->
+  <view class="categories">
+    <view
+      class="category-item {{category === '' ? 'active' : ''}}"
+      data-category=""
+      bindtap="onCategoryChange"
+    >
+      全部
+    </view>
+    <view
+      class="category-item {{category === 'clothing' ? 'active' : ''}}"
+      data-category="clothing"
+      bindtap="onCategoryChange"
+    >
+      服装
+    </view>
+    <view
+      class="category-item {{category === 'books' ? 'active' : ''}}"
+      data-category="books"
+      bindtap="onCategoryChange"
+    >
+      书籍
+    </view>
+    <view
+      class="category-item {{category === 'cosmetics' ? 'active' : ''}}"
+      data-category="cosmetics"
+      bindtap="onCategoryChange"
+    >
+      美妆
+    </view>
+    <view
+      class="category-item {{category === 'other' ? 'active' : ''}}"
+      data-category="other"
+      bindtap="onCategoryChange"
+    >
+      其他
+    </view>
+  </view>
+
+  <!-- 活动列表 -->
+  <view class="activities-section">
+    <view class="section-title">推荐活动</view>
+    <view class="activities-list" wx:if="{{!loading && activities.length > 0}}">
+      <view
+        class="activity-card"
+        wx:for="{{activities}}"
+        wx:key="activity_id"
+        data-id="{{item.activity_id}}"
+        data-link-id="{{item.shareable_link}}"
+        bindtap="onActivityTap"
+      >
+        <!-- 活动封面 -->
+        <view class="activity-cover" wx:if="{{item.items && item.items.length > 0}}">
+          <image
+            class="cover-image"
+            src="{{item.items[0].photo_urls[0]}}"
+            mode="aspectFill"
+            lazy-load="{{true}}"
+            binderror="handleImageError"
+            data-file-id="{{item.items[0].photo_urls[0]}}"
+            data-type="item"
+            data-index="{{index}}"
+            data-item-index="0"
+          ></image>
+          <view class="cover-overlay">
+            <text class="items-count">{{item.items.length}}件</text>
+          </view>
+        </view>
+
+        <!-- 活动信息 -->
+        <view class="activity-info">
+          <view class="activity-header">
+            <view class="user-info">
+              <image
+                class="user-avatar"
+                src="{{item.influencer.avatar_url || '/images/default-avatar.png'}}"
+                mode="aspectFill"
+                binderror="handleImageError"
+                data-file-id="{{item.influencer.avatar_url}}"
+                data-type="avatar"
+                data-index="{{index}}"
+              ></image>
+              <text class="user-nickname">{{item.influencer.nickname || '用户'}}</text>
+            </view>
+          </view>
+
+          <view class="activity-items">
+            <view
+              class="item-preview"
+              wx:for="{{item.items}}"
+              wx:for-item="item"
+              wx:key="item_id"
+              wx:for-index="itemIndex"
+              wx:if="{{itemIndex < 2}}"
+            >
+              <text class="item-name">{{item.label || '未命名物品'}}</text>
+              <text class="item-shipping">¥{{item.shipping_cost_estimate}}</text>
+            </view>
+          </view>
+
+          <view class="activity-footer">
+            <text class="activity-time">{{item.created_at}}</text>
+            <text class="view-detail">查看 →</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="loading" wx:if="{{loading && activities.length === 0}}">
+      <loading loading="{{true}}" message="加载中..."></loading>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty" wx:if="{{!loading && activities.length === 0 && !error}}">
+      <text class="empty-text">暂无活动</text>
+      <text class="empty-desc">试试调整分类或稍后再来</text>
+    </view>
+
+    <!-- 错误状态 -->
+    <error-message wx:if="{{!loading && error}}" error="{{error}}" show="{{true}}" bindretry="loadActivities"></error-message>
+
+    <!-- 加载更多 -->
+    <view class="loading-more" wx:if="{{loading && activities.length > 0}}">
+      <text>加载中...</text>
+    </view>
+
+    <view class="no-more" wx:if="{{!hasMore && activities.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+  </view>
+</view>

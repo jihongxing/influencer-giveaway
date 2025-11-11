@@ -1,0 +1,30 @@
+/* components/error-message/error-message.wxss */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 40rpx;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.error-message {
+  font-size: 28rpx;
+  color: #ff4444;
+  margin-bottom: 30rpx;
+  line-height: 1.6;
+}
+
+.retry-btn {
+  padding: 20rpx 40rpx;
+  background-color: #007aff;
+  color: #fff;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+}
+

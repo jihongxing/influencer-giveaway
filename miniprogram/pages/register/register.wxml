@@ -1,0 +1,40 @@
+<!--pages/register/register.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">注册</text>
+    <text class="subtitle">请输入昵称完成注册</text>
+  </view>
+
+  <!-- 简化版注册表单：仅用户信息 -->
+  <view class="register-section">
+    <view class="user-info-card">
+      <view class="avatar-placeholder">
+        <text class="avatar-icon">👤</text>
+      </view>
+      <view class="form-item">
+        <text class="label">昵称</text>
+        <input 
+          class="input" 
+          value="{{nickname}}" 
+          placeholder="请输入昵称"
+          bindinput="onNicknameInput"
+        />
+      </view>
+      <view class="form-hint">
+        <text>手机号和地址可在个人中心完善</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button
+      class="submit-btn"
+      bindtap="onSubmit"
+      disabled="{{loading || (!nickname || nickname.trim() === '')}}"
+      loading="{{loading}}"
+    >
+      {{loading ? '注册中...' : '完成注册'}}
+    </button>
+  </view>
+</view>

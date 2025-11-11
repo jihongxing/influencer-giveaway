@@ -1,0 +1,64 @@
+项目结构
+后端文件:
+backend/src/models/ - 3 个模型文件
+backend/src/services/ - 7 个服务文件
+backend/src/api/ - 3 个 API 路由文件
+backend/migrations/ - 3 个迁移文件
+backend/tests/ - 10 个测试文件
+前端文件:
+miniprogram/pages/register/ - 注册页面（4 个文件）
+miniprogram/pages/create-giveaway/ - 创建活动页面（4 个文件）
+miniprogram/pages/my-activities/ - 活动列表页面（4 个文件）
+miniprogram/utils/imageUtils.js - 图像工具
+miniprogram/services/aiService.js - AI 服务
+功能特性
+已实现的核心功能：
+用户注册与登录（WeChat 集成）
+照片上传与压缩
+AI 物品识别（Tencent Cloud AI）
+运费自动计算
+活动创建与管理
+二维码生成
+物品标记管理
+待完善项（占位实现）
+以下功能已创建框架，需要完善实际集成：
+Tencent Cloud AI API 调用（当前为占位实现）
+WeChat Cloud Storage 上传（当前为占位实现）
+Tencent COS 上传（当前为占位实现）
+WeChat 登录 code 交换 OpenID（当前为占位实现）
+下一步
+Phase 3 已完成，User Story 1 的核心功能已实现。可以：
+运行数据库迁移：npm run migrate
+启动后端服务：npm run dev
+在微信开发者工具中测试小程序页面
+完善占位实现的实际 API 集成
+所有任务已在 tasks.md 中标记为完成。
+
+
+
+后续步骤（可选）
+如需恢复 TabBar，请：
+在 miniprogram/images/ 目录下添加以下图标文件（建议 81x81px）：
+home.png 和 home-active.png（首页图标）
+activity.png 和 activity-active.png（我的活动图标）
+order.png 和 order-active.png（我的订单图标）
+在 app.json 中恢复 tabBar 配置（参考 miniprogram/images/README.md 中的说明）
+现在可以重新编译小程序，错误应已解决。
+
+
+当前状态
+小程序应可正常编译和运行。TabBar 会以纯文字形式显示，功能不受影响。
+后续添加图标（可选）
+如果需要添加图标，请：
+准备图标文件（建议尺寸：81x81px，PNG格式）
+将图标文件放到 miniprogram/images/tabbar/ 目录
+在 app.json 的 TabBar 配置中重新添加 iconPath 和 selectedIconPath
+需要的图标文件：
+home.png / home-active.png
+explore.png / explore-active.png
+create.png / create-active.png
+profile.png / profile-active.png
+现在可以重新编译小程序，应该不会再出现错误了。
+
+
+

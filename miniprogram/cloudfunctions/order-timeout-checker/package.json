@@ -1,0 +1,9 @@
+{
+  "name": "order-timeout-checker",
+  "version": "1.0.0",
+  "description": "订单超时检查定时器云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

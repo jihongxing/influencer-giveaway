@@ -1,0 +1,137 @@
+<!--pages/batch-upload-items/batch-upload-items.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">添加物品</text>
+    <text class="subtitle" wx:if="{{activity_title}}">活动：{{activity_title}}</text>
+  </view>
+
+  <scroll-view class="content" scroll-y>
+    <!-- 上传区域 -->
+    <view class="upload-section">
+      <view class="upload-box" bindtap="onChoosePhotos">
+        <text class="icon">+</text>
+        <text class="text">拍照或选择照片</text>
+        <text class="hint">最多9张</text>
+      </view>
+    </view>
+
+    <!-- 物品列表 -->
+    <view wx:if="{{items.length > 0}}" class="items-section">
+      <view class="section-title">已添加物品列表（{{items.length}}）</view>
+      
+      <view class="item-card" wx:for="{{items}}" wx:key="temp_id">
+        <view class="item-header">
+          <image 
+            class="item-image" 
+            src="{{item.photo_urls[0]}}" 
+            mode="aspectFill"
+          />
+          <view class="item-info">
+            <view class="item-category">AI识别: {{item.ai_category}}</view>
+            <view class="item-cost">预估运费: ¥{{item.shipping_cost_estimate}}</view>
+          </view>
+          <view class="item-actions">
+            <text 
+              class="delete-btn"
+              data-index="{{index}}"
+              bindtap="onDeleteItem"
+            >删除</text>
+          </view>
+        </view>
+
+        <view class="item-inputs">
+          <!-- 类别选择器 -->
+          <view class="input-group full">
+            <text class="label">类别:</text>
+            <picker 
+              mode="selector" 
+              range="{{categoryOptions}}" 
+              range-key="label"
+              value="{{item.categoryIndex || 0}}"
+              data-index="{{index}}"
+              bindchange="onCategoryChange"
+            >
+              <view class="picker-value">
+                {{categoryOptions[item.categoryIndex || 0].label}}
+              </view>
+            </picker>
+          </view>
+          
+          <view class="input-group quantity-group">
+            <text class="label">数量:</text>
+            <view class="quantity-selector">
+              <button 
+                class="quantity-btn"
+                data-index="{{index}}"
+                data-action="decrease"
+                bindtap="onQuantityChange"
+                disabled="{{item.quantity <= 1}}"
+              >-</button>
+              <input 
+                class="quantity-input" 
+                type="digit"
+                value="{{item.quantity}}"
+                data-index="{{index}}"
+                bindinput="onQuantityInput"
+                bindblur="onQuantityBlur"
+              />
+              <button 
+                class="quantity-btn"
+                data-index="{{index}}"
+                data-action="increase"
+                bindtap="onQuantityChange"
+              >+</button>
+            </view>
+            <text class="unit">件</text>
+          </view>
+          
+          <view class="input-group full">
+            <text class="label">备注:</text>
+            <input 
+              class="input" 
+              placeholder="选填"
+              value="{{item.label}}"
+              data-index="{{index}}"
+              bindinput="onLabelInput"
+            />
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 批量设置 -->
+    <view wx:if="{{items.length > 0}}" class="batch-section">
+      <view class="section-title">批量设置</view>
+      <view class="input-row">
+        <text class="label">物品标记前缀:</text>
+        <input 
+          class="input" 
+          value="{{marker_prefix}}"
+          bindinput="onMarkerPrefixInput"
+        />
+      </view>
+      <view class="hint">标记格式: {前缀}_{批次}_{序号}_{数量}</view>
+    </view>
+
+    <!-- 提示信息 -->
+    <view wx:if="{{uploading}}" class="loading-tip">
+      <text>正在上传照片...</text>
+    </view>
+    <view wx:if="{{processing}}" class="loading-tip">
+      <text>正在AI识别...</text>
+    </view>
+  </scroll-view>
+
+  <!-- 底部按钮 -->
+  <view class="footer">
+    <button class="btn btn-cancel" bindtap="onBack">返回</button>
+    <button 
+      class="btn btn-primary" 
+      loading="{{publishing}}"
+      disabled="{{items.length === 0}}"
+      bindtap="onPublish"
+    >
+      完成并发布活动
+    </button>
+  </view>
+</view>

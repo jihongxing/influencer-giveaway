@@ -1,0 +1,50 @@
+<!--pages/admin-migrate/admin-migrate.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">数据库迁移工具</text>
+    <text class="subtitle">运行数据库迁移脚本</text>
+  </view>
+
+  <view class="content">
+    <view class="info-box">
+      <text class="info-title">迁移内容</text>
+      <text class="info-item">• 为 activities 集合添加15个新字段</text>
+      <text class="info-item">• 为 items 集合添加4个新字段</text>
+      <text class="info-item">• 自动计算统计数据</text>
+    </view>
+
+    <view class="warning-box">
+      <text class="warning-icon">⚠️</text>
+      <text class="warning-text">请确保已备份数据后再运行迁移！</text>
+    </view>
+
+    <button 
+      class="migrate-btn" 
+      loading="{{migrating}}"
+      bindtap="onRunMigration"
+    >
+      {{migrating ? '迁移中...' : '开始迁移'}}
+    </button>
+
+    <!-- 日志显示 -->
+    <view wx:if="{{logs.length > 0}}" class="logs-box">
+      <text class="logs-title">执行日志</text>
+      <view class="log-item" wx:for="{{logs}}" wx:key="index">
+        <text>{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 结果显示 -->
+    <view wx:if="{{result}}" class="result-box">
+      <text class="result-title">迁移结果</text>
+      <view class="result-item">
+        <text class="label">Activities:</text>
+        <text class="value">总共 {{result.data.activities.total}} 条，成功 {{result.data.activities.migrated}} 条</text>
+      </view>
+      <view class="result-item">
+        <text class="label">Items:</text>
+        <text class="value">总共 {{result.data.items.total}} 条，成功 {{result.data.items.migrated}} 条</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,43 @@
+<!--pages/giveaway/giveaway.wxml-->
+<loading loading="{{loading}}" message="加载中..." fullscreen="{{true}}"></loading>
+<error-message wx:if="{{!loading && error}}" error="{{error}}" show="{{true}}" bindretry="loadGiveawayData"></error-message>
+<view class="container" wx:if="{{!loading && !error}}">
+  <view class="content">
+    <!-- Influencer Info -->
+    <view class="influencer-section">
+      <image class="avatar" src="{{influencer.avatar_url || '/images/default-avatar.svg'}}" mode="aspectFill" />
+      <text class="nickname">{{influencer.nickname}}</text>
+    </view>
+
+    <!-- Items List -->
+    <view class="items-section">
+      <view class="section-title">可领取物品</view>
+      <view class="items-list">
+        <view
+          wx:for="{{items}}"
+          wx:key="item_id"
+          class="item-card"
+          data-item-id="{{item.item_id}}"
+          bindtap="onItemTap"
+        >
+          <image class="item-image" src="{{item.photo_urls[0]}}" mode="aspectFill" />
+          <view class="item-info">
+            <text class="item-label">{{item.label || '未命名物品'}}</text>
+            <text class="item-category">{{item.category}}</text>
+            <view class="item-footer">
+              <text class="shipping-cost">运费: ¥{{item.shipping_cost_estimate}}</text>
+              <text class="item-status {{item.status}}">
+                {{item.status === 'available' ? '可领取' : '已领取'}}
+              </text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{items.length === 0}}" class="empty">
+      <text>暂无可用物品</text>
+    </view>
+  </view>
+</view>
+

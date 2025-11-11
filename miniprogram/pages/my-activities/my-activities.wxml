@@ -1,0 +1,34 @@
+<!--pages/my-activities/my-activities.wxml-->
+<view class="container">
+  <view class="header-actions">
+    <button class="scan-btn" bindtap="onScanQRCode">扫描匹配订单</button>
+  </view>
+
+  <view class="activities-list" wx:if="{{!loading && activities.length > 0}}">
+    <view class="activity-card" wx:for="{{activities}}" wx:key="id" bindtap="onActivityTap" data-id="{{item.id}}">
+      <view class="activity-header">
+        <text class="activity-status status-{{item.status}}">{{item.status === 'active' ? '进行中' : item.status === 'draft' ? '草稿' : '已完成'}}</text>
+        <text class="activity-date">{{item.created_at}}</text>
+      </view>
+      <view class="activity-info">
+        <text class="items-count">物品数量：{{item.items_count}}</text>
+        <text class="share-link" wx:if="{{item.shareable_link}}">分享链接：{{item.shareable_link}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!loading && activities.length === 0}}">
+    <text>暂无活动</text>
+    <button class="create-btn" bindtap="onCreateActivity">创建活动</button>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <view class="fab" bindtap="onCreateActivity">
+    <text class="fab-icon">+</text>
+  </view>
+</view>
+
+

@@ -1,0 +1,95 @@
+/* components/activity-timeline/activity-timeline.wxss */
+.timeline {
+  width: 100%;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 60rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.activities-list {
+  padding: 0 30rpx;
+}
+
+.activity-item {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+}
+
+.activity-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.platform-badge {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #fff;
+}
+
+.platform-wechat {
+  background-color: #07c160;
+}
+
+.platform-xiaohongshu {
+  background-color: #ff2442;
+}
+
+.platform-douyin {
+  background-color: #000;
+}
+
+.date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.activity-image {
+  width: 100%;
+  margin-bottom: 20rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+
+.activity-image image {
+  width: 100%;
+  height: 400rpx;
+}
+
+.activity-content {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+}
+
+.activity-link {
+  text-align: right;
+  font-size: 24rpx;
+  color: #007aff;
+}
+
+.loading-more,
+.no-more {
+  text-align: center;
+  padding: 40rpx 0;
+  color: #999;
+  font-size: 24rpx;
+}
+
+.load-more-btn {
+  text-align: center;
+  padding: 40rpx 0;
+  color: #007aff;
+  font-size: 28rpx;
+}
+

@@ -1,0 +1,9 @@
+{
+  "name": "test-runner",
+  "version": "1.0.0",
+  "description": "云函数单元测试和集成测试运行器",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

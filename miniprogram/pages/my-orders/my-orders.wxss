@@ -1,0 +1,135 @@
+/* pages/my-orders/my-orders.wxss */
+@import "/styles/design-system.wxss";
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8f9ff 0%, #f5f5f5 100%);
+}
+
+.filter-section {
+  display: flex;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  padding: 24rpx 20rpx;
+  gap: 16rpx;
+  overflow-x: scroll;
+  white-space: nowrap;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.filter-item {
+  padding: 12rpx 28rpx;
+  border-radius: 24rpx;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #666;
+  font-size: 26rpx;
+  flex-shrink: 0;
+  border: 2rpx solid transparent;
+  transition: all 0.3s;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  font-weight: 500;
+}
+
+.filter-item.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-2rpx);
+  box-shadow: 0 4rpx 12rpx rgba(102, 126, 234, 0.3);
+}
+
+.orders-section {
+  padding: 20rpx;
+}
+
+.loading,
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400rpx;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.order-card {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
+  border: 2rpx solid transparent;
+}
+
+.order-card:active {
+  transform: translateY(-2rpx);
+  border-color: #667eea;
+  box-shadow: 0 6rpx 20rpx rgba(102, 126, 234, 0.15);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.order-id {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.order-status {
+  font-size: 26rpx;
+  font-weight: bold;
+  background: linear-gradient(135deg, #07c160 0%, #05a050 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.order-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.item-label {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.order-amount {
+  font-size: 34rpx;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff6b35 0%, #f5576c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.order-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.loading-more,
+.no-more {
+  text-align: center;
+  padding: 40rpx 0;
+  font-size: 24rpx;
+  color: #999;
+}
+

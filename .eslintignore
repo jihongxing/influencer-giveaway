@@ -1,0 +1,17 @@
+# ESLint ignore patterns
+node_modules/
+dist/
+build/
+coverage/
+*.min.js
+*.min.css
+*.bundle.js
+.vscode/
+.idea/
+*.log
+.env*
+*.map
+miniprogram_npm/
+project.config.json
+project.private.config.json
+

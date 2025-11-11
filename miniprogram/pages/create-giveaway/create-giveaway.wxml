@@ -1,0 +1,119 @@
+<!--pages/create-giveaway/create-giveaway.wxml-->
+<view class="container">
+  <!-- Step 1: Upload Photos -->
+  <view class="step-section" wx:if="{{currentStep === 1}}">
+    <view class="step-header">
+      <text class="step-title">上传照片</text>
+      <text class="step-desc">一次最多上传20张照片</text>
+    </view>
+
+    <view class="upload-area" bindtap="onChoosePhotos">
+      <text class="upload-icon">+</text>
+      <text class="upload-text">点击上传照片</text>
+    </view>
+
+    <view class="photo-list" wx:if="{{uploadedPhotos.length > 0}}">
+      <view class="photo-item" wx:for="{{uploadedPhotos}}" wx:key="index">
+        <image class="photo" src="{{item}}" mode="aspectFill" />
+      </view>
+    </view>
+
+    <view class="step-actions">
+      <button
+        class="next-btn"
+        bindtap="onProcessItems"
+        disabled="{{!tempItemIds || tempItemIds.length === 0}}"
+      >
+        下一步：AI识别
+      </button>
+    </view>
+  </view>
+
+  <!-- Step 2: Process Items (Loading) -->
+  <view class="step-section" wx:if="{{currentStep === 2}}">
+    <view class="processing">
+      <loading loading="{{true}}" message="AI正在识别物品..." fullscreen="{{true}}"></loading>
+    </view>
+  </view>
+
+  <!-- Step 3: Edit Items -->
+  <view class="step-section" wx:if="{{currentStep === 3}}">
+    <view class="step-header">
+      <text class="step-title">编辑物品信息</text>
+      <text class="step-desc">请为每个物品设置名称、数量和运费</text>
+    </view>
+
+    <!-- 批量操作栏 -->
+    <view class="batch-toolbar" wx:if="{{batchMode}}">
+      <text class="selected-count">已选择 {{selectedItems.length}} 个</text>
+      <view class="batch-actions">
+        <button class="batch-btn" size="mini" bindtap="onBatchEditQuantity">批量设置数量</button>
+        <button class="batch-btn" size="mini" bindtap="onBatchEditShipping">批量设置运费</button>
+        <button class="batch-btn danger" size="mini" bindtap="onDeleteSelected">删除选中</button>
+      </view>
+    </view>
+
+    <!-- 物品列表 -->
+    <view class="items-list">
+      <view
+        class="item-card {{batchMode && selectedItems.indexOf(index) > -1 ? 'selected' : ''}}"
+        wx:for="{{processedItems}}"
+        wx:key="temp_id"
+        wx:for-index="index"
+      >
+        <!-- 选择框（批量模式） -->
+        <view
+          class="checkbox"
+          wx:if="{{batchMode}}"
+          data-index="{{index}}"
+          bindtap="onToggleItemSelect"
+        >
+          <text class="checkbox-icon" wx:if="{{selectedItems.indexOf(index) > -1}}">✓</text>
+        </view>
+
+        <!-- 物品图片 -->
+        <image class="item-photo" src="{{item.photo_urls[0]}}" mode="aspectFill" />
+
+        <!-- 物品信息 -->
+        <view class="item-info">
+          <text class="item-label">{{item.suggested_label || '未识别物品'}}</text>
+          <text class="item-category">{{item.ai_category || '其他'}}</text>
+          
+          <!-- 数量编辑 -->
+          <view class="item-field">
+            <text class="field-label">数量：</text>
+            <text class="field-value" data-index="{{index}}" bindtap="onEditQuantity">
+              {{item.quantity || 1}}
+            </text>
+            <text class="field-edit">编辑</text>
+          </view>
+
+          <!-- 运费显示 -->
+          <view class="item-field">
+            <text class="field-label">运费：</text>
+            <text class="field-value">¥{{item.shipping_cost_estimate || 0}}</text>
+          </view>
+        </view>
+
+        <!-- 操作按钮 -->
+        <view class="item-actions" wx:if="{{!batchMode}}">
+          <button class="edit-btn" size="mini" data-index="{{index}}" bindtap="onEditItem">编辑</button>
+          <button class="delete-btn" size="mini" data-index="{{index}}" bindtap="onDeleteItem">删除</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="bottom-actions">
+      <button
+        class="batch-toggle-btn"
+        bindtap="onToggleBatchMode"
+      >
+        {{batchMode ? '取消批量' : '批量操作'}}
+      </button>
+      <button class="submit-btn" bindtap="onSubmit">
+        保存活动 ({{processedItems.length}}个物品)
+      </button>
+    </view>
+  </view>
+</view>

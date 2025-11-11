@@ -1,0 +1,11 @@
+{
+  "name": "orders-release-timeout",
+  "description": "每15分钟检查并释放超时未支付的订单库存",
+  "triggers": [
+    {
+      "name": "releaseExpiredLocksTrigger",
+      "type": "timer",
+      "config": "0 */15 * * * *"
+    }
+  ]
+}

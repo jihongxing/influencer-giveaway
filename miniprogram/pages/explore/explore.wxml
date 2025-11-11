@@ -1,0 +1,155 @@
+<!--pages/explore/explore.wxml-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar" bindtap="onSearch">
+    <text class="search-icon">🔍</text>
+    <text class="search-placeholder">搜索活动或用户</text>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <!-- 分类筛选 -->
+    <view class="filter-group">
+      <view
+        class="filter-item {{category === '' ? 'active' : ''}}"
+        data-category=""
+        bindtap="onCategoryChange"
+      >
+        全部
+      </view>
+      <view
+        class="filter-item {{category === 'clothing' ? 'active' : ''}}"
+        data-category="clothing"
+        bindtap="onCategoryChange"
+      >
+        服装
+      </view>
+      <view
+        class="filter-item {{category === 'books' ? 'active' : ''}}"
+        data-category="books"
+        bindtap="onCategoryChange"
+      >
+        书籍
+      </view>
+      <view
+        class="filter-item {{category === 'cosmetics' ? 'active' : ''}}"
+        data-category="cosmetics"
+        bindtap="onCategoryChange"
+      >
+        美妆
+      </view>
+      <view
+        class="filter-item {{category === 'other' ? 'active' : ''}}"
+        data-category="other"
+        bindtap="onCategoryChange"
+      >
+        其他
+      </view>
+    </view>
+
+    <!-- 排序和状态 -->
+    <view class="filter-actions">
+      <view
+        class="filter-btn {{sort === 'latest' ? 'active' : ''}}"
+        data-sort="latest"
+        bindtap="onSortChange"
+      >
+        最新
+      </view>
+      <view
+        class="filter-btn {{sort === 'popular' ? 'active' : ''}}"
+        data-sort="popular"
+        bindtap="onSortChange"
+      >
+        最热
+      </view>
+      <view
+        class="filter-btn {{status === 'active' ? 'active' : ''}}"
+        data-status="active"
+        bindtap="onStatusChange"
+      >
+        进行中
+      </view>
+    </view>
+  </view>
+
+  <!-- 活动列表 -->
+  <view class="activities-list" wx:if="{{!loading && activities.length > 0}}">
+    <view
+      class="activity-card"
+      wx:for="{{activities}}"
+      wx:key="activity_id"
+      data-id="{{item.activity_id}}"
+      data-link-id="{{item.shareable_link}}"
+      bindtap="onActivityTap"
+    >
+      <!-- 活动封面图（第一张物品图片） -->
+      <view class="activity-cover" wx:if="{{item.items && item.items.length > 0}}">
+        <image
+          class="cover-image"
+          src="{{item.items[0].photo_urls[0]}}"
+          mode="aspectFill"
+          lazy-load="{{true}}"
+        ></image>
+        <view class="cover-overlay">
+          <text class="items-count">{{item.items.length}}件物品</text>
+        </view>
+      </view>
+
+      <!-- 活动信息 -->
+      <view class="activity-info">
+        <view class="activity-header">
+          <view class="user-info">
+            <image
+              class="user-avatar"
+              src="{{item.influencer.avatar_url || '/images/default-avatar.png'}}"
+              mode="aspectFill"
+            ></image>
+            <text class="user-nickname">{{item.influencer.nickname || '用户'}}</text>
+          </view>
+          <text class="activity-status">进行中</text>
+        </view>
+
+        <view class="activity-items">
+          <view
+            class="item-preview"
+            wx:for="{{item.items}}"
+            wx:for-item="item"
+            wx:key="item_id"
+            wx:for-index="itemIndex"
+            wx:if="{{itemIndex < 3}}"
+          >
+            <text class="item-name">{{item.label || '未命名物品'}}</text>
+            <text class="item-shipping">¥{{item.shipping_cost_estimate}}</text>
+          </view>
+        </view>
+
+        <view class="activity-footer">
+          <text class="activity-time">{{item.created_at}}</text>
+          <text class="view-detail">查看详情 →</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading && activities.length === 0}}">
+    <loading loading="{{true}}" message="加载中..."></loading>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && activities.length === 0}}">
+    <text class="empty-text">暂无活动</text>
+    <text class="empty-desc">试试调整筛选条件</text>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="loading-more" wx:if="{{loading && activities.length > 0}}">
+    <text>加载中...</text>
+  </view>
+
+  <view class="no-more" wx:if="{{!hasMore && activities.length > 0}}">
+    <text>没有更多了</text>
+  </view>
+</view>
+

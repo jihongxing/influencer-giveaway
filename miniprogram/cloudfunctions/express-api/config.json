@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "openapi": []
+  },
+  "env": {
+    "KUAIDI100_KEY": "EZWROLVn8912",
+    "KUAIDI100_SECRET": "b18729a888c54001b9d9f9a7aa6cbce7",
+    "KDN_EBUSINESS_ID": "1901915",
+    "KDN_API_KEY": "633e5647-b75c-4143-a874-1e0f76627ba0"
+  }
+}

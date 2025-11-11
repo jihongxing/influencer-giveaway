@@ -1,0 +1,58 @@
+<!--pages/share-item/share-item.wxml-->
+<view class="container">
+  <view class="form">
+    <view class="section">
+      <text class="label">上传图片</text>
+      <text class="hint">至少1张，最多9张</text>
+    </view>
+
+    <view class="photos-grid">
+      <view
+        class="photo-item"
+        wx:for="{{photos}}"
+        wx:key="*this"
+        wx:for-index="index"
+      >
+        <image class="photo" src="{{item}}" mode="aspectFill"></image>
+        <view class="remove-btn" data-index="{{index}}" bindtap="onRemovePhoto">
+          <text>×</text>
+        </view>
+      </view>
+
+      <view
+        wx:if="{{photos.length < 9}}"
+        class="add-photo-btn"
+        bindtap="onChoosePhotos"
+      >
+        <text class="add-icon">+</text>
+        <text class="add-text">添加图片</text>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="label">分享内容</text>
+      <text class="hint">可选，最多500字</text>
+    </view>
+
+    <textarea
+      class="textarea"
+      placeholder="写下你的分享感受..."
+      value="{{textContent}}"
+      maxlength="500"
+      bindinput="onTextInput"
+    ></textarea>
+
+    <view class="char-count">
+      <text>{{textContent.length}}/500</text>
+    </view>
+
+    <button
+      class="submit-btn"
+      type="primary"
+      bindtap="onSubmit"
+      disabled="{{uploading || photos.length === 0}}"
+    >
+      {{uploading ? '提交中...' : '发布分享'}}
+    </button>
+  </view>
+</view>

@@ -1,0 +1,168 @@
+<!--pages/profile/profile.wxml-->
+<view class="container">
+  <!-- 未登录状态 -->
+  <view class="login-prompt" wx:if="{{!isLoggedIn && !loading}}">
+    <view class="login-content">
+      <text class="login-title">登录后查看个人中心</text>
+      <text class="login-desc">登录后可以管理您的活动和订单</text>
+      <button class="login-btn" type="primary" bindtap="onLogin">立即登录</button>
+    </view>
+  </view>
+
+  <!-- 已登录状态 -->
+  <view class="profile-content" wx:if="{{isLoggedIn}}">
+    <!-- 用户信息 -->
+    <view class="user-section">
+      <view class="user-header">
+        <image
+          class="user-avatar"
+          src="{{userInfo.avatar_url || '/images/default-avatar.png'}}"
+          mode="aspectFill"
+        ></image>
+        <view class="user-info">
+          <text class="user-nickname">{{userInfo.nickname || '未设置昵称'}}</text>
+          <text class="user-phone">{{userInfo.phone_number || '未绑定手机号'}}</text>
+        </view>
+        <view class="edit-btn" bindtap="onEditProfile">
+          <text>编辑</text>
+        </view>
+      </view>
+      
+      <!-- 用户信息完善提示 -->
+      <view class="info-completion-section">
+        <view wx:if="{{missingInfo.basicInfo}}" class="info-item missing">
+          <text class="info-title">基本信息</text>
+          <text class="info-status">未完善</text>
+          <button class="action-btn primary" bindtap="getUserBasicInfo">获取昵称和头像</button>
+        </view>
+        
+        <view wx:if="{{missingInfo.phoneNumber}}" class="info-item missing">
+          <text class="info-title">手机号</text>
+          <text class="info-status">未绑定</text>
+          <button class="action-btn primary" open-type="getPhoneNumber" bindgetphonenumber="getUserPhoneNumber" disabled="{{updating}}">
+            {{updating ? '获取中...' : '获取手机号'}}
+          </button>
+        </view>
+        
+        <view wx:if="{{missingInfo.shippingAddress}}" class="info-item missing">
+          <text class="info-title">收货地址</text>
+          <text class="info-status">未设置</text>
+          <button class="action-btn primary" bindtap="chooseShippingAddress">选择收货地址</button>
+        </view>
+        
+        <view wx:if="{{!missingInfo.basicInfo && !missingInfo.phoneNumber && !missingInfo.shippingAddress}}" class="info-item completed">
+          <text class="info-title">用户信息</text>
+          <text class="info-status success">全部完善</text>
+          <text class="success-icon">✓</text>
+        </view>
+      </view>
+
+      <!-- 统计信息（可选） -->
+      <view class="stats-section">
+        <view class="stat-item">
+          <text class="stat-value">{{stats.activitiesCount}}</text>
+          <text class="stat-label">活动</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{stats.ordersCount}}</text>
+          <text class="stat-label">订单</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{stats.itemsSent}}</text>
+          <text class="stat-label">已送出</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 我的活动 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">我的活动</text>
+        <text class="section-more" bindtap="onViewAllActivities">查看全部 →</text>
+      </view>
+
+      <view class="activities-list" wx:if="{{recentActivities.length > 0}}">
+        <view
+          class="activity-card"
+          wx:for="{{recentActivities}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onActivityTap"
+        >
+          <view class="activity-header">
+            <text class="activity-status status-{{item.status}}">
+              {{item.status === 'active' ? '进行中' : item.status === 'draft' ? '草稿' : '已完成'}}
+            </text>
+            <text class="activity-date">{{item.created_at}}</text>
+          </view>
+          <view class="activity-info">
+            <text class="items-count">物品数量：{{item.items_count || 0}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty-section" wx:if="{{recentActivities.length === 0}}">
+        <text class="empty-text">暂无活动</text>
+        <button class="create-btn" bindtap="onCreateActivity">创建活动</button>
+      </view>
+    </view>
+
+    <!-- 我的订单 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">我的订单</text>
+        <text class="section-more" bindtap="onViewAllOrders">查看全部 →</text>
+      </view>
+
+      <view class="orders-list" wx:if="{{recentOrders.length > 0}}">
+        <view
+          class="order-card"
+          wx:for="{{recentOrders}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onOrderTap"
+        >
+          <view class="order-header">
+            <text class="order-status">{{item.statusText || item.order_status}}</text>
+            <text class="order-amount">¥{{item.total_amount}}</text>
+          </view>
+          <view class="order-info">
+            <text class="order-item">{{item.itemLabel || item.item_label || '物品'}}</text>
+            <text class="order-time">{{item.created_at}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty-section" wx:if="{{recentOrders.length === 0}}">
+        <text class="empty-text">暂无订单</text>
+      </view>
+    </view>
+
+    <!-- 其他功能 -->
+    <view class="section">
+      <view class="menu-list">
+        <view class="menu-item" bindtap="onSettings">
+          <text class="menu-icon">⚙️</text>
+          <text class="menu-text">设置</text>
+          <text class="menu-arrow">→</text>
+        </view>
+        <view class="menu-item" bindtap="onHelp">
+          <text class="menu-icon">❓</text>
+          <text class="menu-text">帮助中心</text>
+          <text class="menu-arrow">→</text>
+        </view>
+        <view class="menu-item logout" bindtap="onLogout">
+          <text class="menu-icon">🚺</text>
+          <text class="menu-text">退出登录</text>
+          <text class="menu-arrow">→</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <loading loading="{{true}}" message="加载中..."></loading>
+  </view>
+</view>
+

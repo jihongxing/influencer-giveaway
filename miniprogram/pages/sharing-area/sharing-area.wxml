@@ -1,0 +1,59 @@
+<!--pages/sharing-area/sharing-area.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">分享区</text>
+  </view>
+
+  <view wx:if="{{loading && posts.length === 0}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:elif="{{posts.length === 0}}" class="empty">
+    <text>暂无分享</text>
+  </view>
+
+  <scroll-view wx:else scroll-y class="posts-list">
+    <view class="post-item" wx:for="{{posts}}" wx:key="post_id">
+      <view class="post-header">
+        <image class="avatar" src="{{item.fan_avatar}}" mode="aspectFill"></image>
+        <view class="user-info">
+          <text class="nickname">{{item.fan_nickname}}</text>
+          <text class="time">{{item.created_at}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{item.text_content}}" class="post-content">
+        <text>{{item.text_content}}</text>
+      </view>
+
+      <view class="post-photos">
+        <image
+          wx:for="{{item.photos}}"
+          wx:for-item="photo"
+          wx:key="*this"
+          class="photo"
+          src="{{photo}}"
+          mode="aspectFill"
+          data-src="{{photo}}"
+          data-urls="{{item.photos}}"
+          bindtap="onPreviewImage"
+        ></image>
+      </view>
+
+      <view class="post-footer">
+        <view class="like-btn" data-post-id="{{item.post_id}}" bindtap="onLikePost">
+          <text class="like-icon">❤️</text>
+          <text class="like-count">{{item.likes_count}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{loading && posts.length > 0}}" class="loading-more">
+      <text>加载中...</text>
+    </view>
+
+    <view wx:if="{{!hasMore && posts.length > 0}}" class="no-more">
+      <text>没有更多了</text>
+    </view>
+  </scroll-view>
+</view>

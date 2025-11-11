@@ -1,0 +1,8 @@
+<!--components/loading/loading.wxml-->
+<view wx:if="{{loading}}" class="loading-container {{fullscreen ? 'fullscreen' : ''}}">
+  <view class="loading-spinner">
+    <view class="spinner"></view>
+  </view>
+  <text class="loading-message">{{message}}</text>
+</view>
+

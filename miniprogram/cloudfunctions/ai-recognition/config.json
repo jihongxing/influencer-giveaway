@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "openapi": []
+  },
+  "env": {
+    "BAIDU_API_KEY": "Ynk0D3FhSZO5UVxcLrMMO60R",
+    "BAIDU_SECRET_KEY": "bTHzNmCKAVE8dKSFGH2HNHg3A4sHCEMA"
+  }
+}

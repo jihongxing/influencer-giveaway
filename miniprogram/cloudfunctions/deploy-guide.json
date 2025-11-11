@@ -1,0 +1,185 @@
+{
+  "deployment_order": {
+    "phase_1_infrastructure": {
+      "description": "第一批：基础设施（必须最先部署）",
+      "order": 1,
+      "functions": [
+        "db-init",
+        "db-index-helper"
+      ],
+      "steps": [
+        "1. 右键点击 db-init 文件夹",
+        "2. 选择【上传并部署：云端安装依赖】",
+        "3. 等待上传完成",
+        "4. 重复以上步骤上传 db-index-helper",
+        "5. 在云开发控制台调用 db-init 初始化数据库",
+        "6. 在云开发控制台调用 db-index-helper 创建索引"
+      ]
+    },
+    "phase_2_core": {
+      "description": "第二批：核心业务功能",
+      "order": 2,
+      "functions": [
+        "auth",
+        "ai-recognition",
+        "express-api"
+      ],
+      "steps": [
+        "1. 依次上传 auth、ai-recognition、express-api",
+        "2. 每个云函数选择【上传并部署：云端安装依赖】",
+        "3. 确保依赖安装完成"
+      ]
+    },
+    "phase_3_business": {
+      "description": "第三批：业务逻辑功能",
+      "order": 3,
+      "functions": [
+        "activities",
+        "items",
+        "orders",
+        "payments",
+        "shipping",
+        "sharing",
+        "analytics"
+      ],
+      "steps": [
+        "1. 按顺序依次上传每个云函数",
+        "2. 确保上一个上传完成后再上传下一个",
+        "3. 每个都选择【上传并部署：云端安装依赖】"
+      ]
+    },
+    "phase_4_timers": {
+      "description": "第四批：定时器任务",
+      "order": 4,
+      "functions": [
+        "order-timeout-checker",
+        "logistics-tracker",
+        "shipping-reminder"
+      ],
+      "steps": [
+        "1. 上传云函数",
+        "2. 在云开发控制台-云函数中配置定时触发器",
+        "3. order-timeout-checker: 0 */5 * * * * * (每5分钟)",
+        "4. logistics-tracker: 0 0 */6 * * * * (每6小时)",
+        "5. shipping-reminder: 0 0 */6 * * * * (每6小时)"
+      ]
+    },
+    "phase_5_testing": {
+      "description": "第五批：测试工具（可选）",
+      "order": 5,
+      "functions": [
+        "test-runner",
+        "performance-tester"
+      ],
+      "steps": [
+        "1. 这些是测试工具，生产环境可选",
+        "2. 开发/测试环境建议上传",
+        "3. 用于功能测试和性能监控"
+      ]
+    }
+  },
+  "environment_variables": {
+    "description": "环境变量配置（在云开发控制台配置）",
+    "required": [
+      {
+        "key": "BAIDU_AI_API_KEY",
+        "description": "百度AI API密钥",
+        "required_for": ["ai-recognition"]
+      },
+      {
+        "key": "BAIDU_AI_SECRET_KEY",
+        "description": "百度AI Secret密钥",
+        "required_for": ["ai-recognition"]
+      },
+      {
+        "key": "EXPRESS_API_KEY",
+        "description": "快递100 API密钥",
+        "required_for": ["express-api", "shipping"]
+      },
+      {
+        "key": "EXPRESS_CUSTOMER",
+        "description": "快递100客户编号",
+        "required_for": ["express-api", "shipping"]
+      },
+      {
+        "key": "WECHAT_PAY_MCH_ID",
+        "description": "微信支付商户号",
+        "required_for": ["payments"]
+      },
+      {
+        "key": "WECHAT_PAY_KEY",
+        "description": "微信支付密钥",
+        "required_for": ["payments"]
+      }
+    ]
+  },
+  "pre_deployment_checklist": [
+    "✅ 已创建微信云开发环境",
+    "✅ 已配置环境变量",
+    "✅ 已准备百度AI API密钥",
+    "✅ 已准备快递100 API密钥",
+    "✅ 已开通微信支付（如需支付功能）",
+    "✅ 所有云函数本地代码已完成",
+    "✅ 已安装 wx-server-sdk 依赖"
+  ],
+  "deployment_commands": {
+    "description": "如果使用命令行部署",
+    "note": "需要安装微信开发者工具命令行",
+    "commands": [
+      "# 部署单个云函数",
+      "wx-cli cloud functions deploy [云函数名]",
+      "",
+      "# 批量部署所有云函数",
+      "wx-cli cloud functions deploy --all",
+      "",
+      "# 查看部署状态",
+      "wx-cli cloud functions list"
+    ]
+  },
+  "post_deployment_verification": [
+    "1. 在云开发控制台查看所有云函数是否上传成功",
+    "2. 调用 db-init 初始化数据库集合",
+    "3. 调用 db-index-helper 创建索引",
+    "4. 调用 test-runner 运行单元测试",
+    "5. 调用 performance-tester 运行性能测试",
+    "6. 检查定时器是否正常运行",
+    "7. 在小程序中测试核心业务流程"
+  ],
+  "common_issues": [
+    {
+      "issue": "云函数上传失败",
+      "solutions": [
+        "检查网络连接",
+        "确认云开发环境已创建",
+        "检查云函数名称是否符合规范（小写字母、数字、连字符）",
+        "确认微信开发者工具版本是最新的"
+      ]
+    },
+    {
+      "issue": "依赖安装失败",
+      "solutions": [
+        "选择【上传并部署：云端安装依赖】而不是【仅上传】",
+        "检查 package.json 格式是否正确",
+        "在云开发控制台手动触发依赖重装"
+      ]
+    },
+    {
+      "issue": "云函数调用失败",
+      "solutions": [
+        "检查环境变量是否配置",
+        "查看云函数日志排查错误",
+        "确认依赖的云函数已上传",
+        "确认数据库集合已创建"
+      ]
+    },
+    {
+      "issue": "定时器不执行",
+      "solutions": [
+        "在云开发控制台检查定时器配置",
+        "确认 Cron 表达式格式正确",
+        "查看定时器执行日志",
+        "确认云函数已成功部署"
+      ]
+    }
+  ]
+}

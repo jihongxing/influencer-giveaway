@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "赠送活动",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "loading": "/components/loading/loading",
+    "error-message": "/components/error-message/error-message"
+  }
+}
+

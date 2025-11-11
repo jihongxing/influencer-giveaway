@@ -1,0 +1,67 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/explore/explore",
+    "pages/create-activity-info/create-activity-info",
+    "pages/batch-upload-items/batch-upload-items",
+    "pages/create-giveaway/create-giveaway",
+    "pages/profile/profile",
+    "pages/register/register",
+    "pages/giveaway/giveaway",
+    "pages/activity-detail/activity-detail",
+    "pages/claim-item/claim-item",
+    "pages/payment/payment",
+    "pages/order-status/order-status",
+    "pages/order-detail/order-detail",
+    "pages/my-orders/my-orders",
+    "pages/my-activities/my-activities",
+    "pages/sharing-area/sharing-area",
+    "pages/share-item/share-item",
+    "pages/shipping-label/shipping-label",
+    "pages/test-auth/test-auth"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "主播赠送平台",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#07C160",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/explore/explore",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/create-activity-info/create-activity-info",
+        "text": "创建"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true,
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "requiredPrivateInfos": [
+    "getLocation",
+    "chooseLocation",
+    "chooseAddress",
+    "choosePoi"
+  ]
+}

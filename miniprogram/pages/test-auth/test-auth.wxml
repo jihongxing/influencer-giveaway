@@ -1,0 +1,29 @@
+<!-- pages/test-auth/test-auth.wxml -->
+<view class="container">
+  <view class="header">
+    <text class="title">云存储权限测试</text>
+  </view>
+  
+  <view class="content">
+    <view class="result-box">
+      <text class="result-text">{{testResult}}</text>
+    </view>
+    
+    <button 
+      class="retry-btn" 
+      bindtap="onRetry" 
+      loading="{{loading}}"
+      disabled="{{loading}}"
+    >
+      {{loading ? '测试中...' : '重新测试'}}
+    </button>
+    
+    <button 
+      class="test-files-btn" 
+      bindtap="onTestFiles"
+      disabled="{{loading}}"
+    >
+      测试实际文件
+    </button>
+  </view>
+</view>

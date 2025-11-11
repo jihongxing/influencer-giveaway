@@ -1,0 +1,130 @@
+<!--pages/claim-item/claim-item.wxml-->
+<view class="container">
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:else class="content">
+    <!-- Item Info -->
+    <view class="item-section">
+      <image class="item-image" src="{{item.photo_urls[0]}}" mode="aspectFill" />
+      <view class="item-info">
+        <text class="item-label">{{item.label || '未命名物品'}}</text>
+        <text class="item-category">{{item.category}}</text>
+        <text class="item-stock">剩余{{item.remaining_quantity}}件</text>
+        <text class="shipping-cost">单件基础运费: ¥{{item.base_shipping_cost}}</text>
+      </view>
+    </view>
+
+    <!-- 数量选择器 -->
+    <view class="quantity-section">
+      <view class="section-title">选择数量</view>
+      <view class="quantity-selector">
+        <button class="quantity-btn" bindtap="onDecreaseQuantity" disabled="{{quantity <= 1}}">
+          -
+        </button>
+        <text class="quantity-value">{{quantity}}</text>
+        <button class="quantity-btn" bindtap="onIncreaseQuantity" disabled="{{quantity >= maxQuantity}}">
+          +
+        </button>
+        <text class="quantity-hint">（最多{{maxQuantity}}件）</text>
+      </view>
+    </view>
+
+    <!-- 费用明细 -->
+    <view class="cost-section">
+      <view class="section-title">费用明细</view>
+      <view class="cost-item">
+        <text class="cost-label">基础运费</text>
+        <text class="cost-value">¥{{baseShippingCost}}</text>
+      </view>
+      <view class="cost-item">
+        <text class="cost-label">包装费（¥2 × {{quantity}}）</text>
+        <text class="cost-value">¥{{packagingFee}}</text>
+      </view>
+      <view class="cost-item">
+        <text class="cost-label">平台服务费（10%）</text>
+        <text class="cost-value">¥{{platformFee}}</text>
+      </view>
+      <view class="cost-divider"></view>
+      <view class="cost-item cost-total">
+        <text class="cost-label">合计</text>
+        <text class="cost-value total">¥{{totalAmount}}</text>
+      </view>
+    </view>
+
+    <!-- Shipping Form -->
+    <view class="form-section">
+      <view class="section-header">
+        <view class="section-title">收货信息</view>
+        <button class="load-address-btn" bindtap="onLoadUserAddress" wx:if="{{!addressLoaded}}">
+          📦 读取我的地址
+        </button>
+        <text class="address-loaded-hint" wx:else>✅ 已加载</text>
+      </view>
+
+      <view class="form-item">
+        <text class="label">收货地址</text>
+        <picker mode="region" bindchange="onRegionChange">
+          <view class="picker">
+            {{shippingAddress.province && shippingAddress.city && shippingAddress.district
+              ? shippingAddress.province + ' ' + shippingAddress.city + ' ' + shippingAddress.district
+              : '请选择省市区'}}
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <text class="label">详细地址</text>
+        <input
+          class="input"
+          placeholder="请输入详细地址"
+          value="{{shippingAddress.street}}"
+          bindinput="onStreetInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="label">邮政编码（选填）</text>
+        <input
+          class="input"
+          type="number"
+          placeholder="请输入邮政编码"
+          value="{{shippingAddress.postal_code}}"
+          bindinput="onPostalCodeInput"
+          maxlength="6"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="label">联系人姓名</text>
+        <input
+          class="input"
+          placeholder="请输入联系人姓名"
+          value="{{shippingContactName}}"
+          bindinput="onContactNameInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="label">联系人手机号</text>
+        <input
+          class="input"
+          type="number"
+          placeholder="请输入联系人手机号"
+          value="{{shippingContactPhone}}"
+          bindinput="onContactPhoneInput"
+          maxlength="11"
+        />
+      </view>
+    </view>
+
+    <!-- Submit Button -->
+    <view class="submit-section">
+      <button class="submit-btn" bindtap="onSubmit" disabled="{{submitting}}">
+        {{submitting ? '处理中...' : '确认领取并支付'}}
+      </button>
+    </view>
+  </view>
+</view>
+

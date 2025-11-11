@@ -1,0 +1,152 @@
+<!--pages/order-detail/order-detail.wxml-->
+<view class="container">
+  <!-- 加载中 -->
+  <loading wx:if="{{loading}}" loading="{{true}}" message="加载中..." fullscreen="{{true}}"></loading>
+
+  <!-- 错误状态 -->
+  <error-message wx:if="{{!loading && error}}" error="{{error}}" show="{{true}}" bindretry="loadOrderData"></error-message>
+
+  <!-- 订单内容 -->
+  <view class="order-content" wx:if="{{!loading && !error && order}}">
+    <!-- 订单状态 -->
+    <view class="status-section">
+      <view class="status-badge status-{{order.order_status}}">
+        {{getStatusText(order.order_status)}}
+      </view>
+      <text class="payment-status">支付状态：{{getPaymentStatusText(order.payment_status)}}</text>
+    </view>
+
+    <!-- 物品信息 -->
+    <view class="item-section">
+      <view class="section-title">物品信息</view>
+      <view class="item-card" wx:if="{{item}}">
+        <image
+          class="item-image"
+          src="{{item.photo_urls[0]}}"
+          mode="aspectFill"
+        ></image>
+        <view class="item-info">
+          <text class="item-label">{{item.label || '未命名物品'}}</text>
+          <text class="item-category">{{item.category || '其他'}}</text>
+          <text class="item-shipping">运费: ¥{{item.shipping_cost_estimate}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 收货信息（仅领取者可见） -->
+    <view class="shipping-section" wx:if="{{isOwner}}">
+      <view class="section-title">收货信息</view>
+      <view class="info-card">
+        <view class="info-row">
+          <text class="info-label">收货人</text>
+          <text class="info-value">{{order.shipping_contact_name}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">联系电话</text>
+          <text class="info-value">{{order.shipping_contact_phone}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">收货地址</text>
+          <text class="info-value">{{order.shipping_address}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 物流信息 -->
+    <view class="logistics-section" wx:if="{{shippingInfo}}">
+      <view class="section-title">物流信息</view>
+      <view class="info-card">
+        <view class="info-row">
+          <text class="info-label">物流公司</text>
+          <text class="info-value">{{shippingInfo.shipping_provider}}</text>
+        </view>
+        <view class="info-row" wx:if="{{shippingInfo.tracking_number}}">
+          <text class="info-label">运单号</text>
+          <text class="info-value">{{shippingInfo.tracking_number}}</text>
+        </view>
+        <view class="info-row" wx:if="{{shippingInfo.tracking_status}}">
+          <text class="info-label">物流状态</text>
+          <text class="info-value">{{shippingInfo.tracking_status}}</text>
+        </view>
+        <view class="info-row" wx:if="{{shippingInfo.estimated_delivery_date}}">
+          <text class="info-label">预计送达</text>
+          <text class="info-value">{{shippingInfo.estimated_delivery_date}}</text>
+        </view>
+        <button
+          class="view-label-btn"
+          wx:if="{{shippingInfo.shipping_label_url}}"
+          bindtap="onViewShippingLabel"
+        >
+          查看物流标签
+        </button>
+      </view>
+    </view>
+
+    <!-- 费用明细 -->
+    <view class="cost-section">
+      <view class="section-title">费用明细</view>
+      <view class="cost-card">
+        <view class="cost-row">
+          <text class="cost-label">包装费</text>
+          <text class="cost-value">¥{{order.packaging_fee}}</text>
+        </view>
+        <view class="cost-row">
+          <text class="cost-label">运费</text>
+          <text class="cost-value">¥{{order.shipping_cost}}</text>
+        </view>
+        <view class="cost-row">
+          <text class="cost-label">平台服务费</text>
+          <text class="cost-value">¥{{order.platform_fee}}</text>
+        </view>
+        <view class="cost-divider"></view>
+        <view class="cost-row total">
+          <text class="cost-label">总计</text>
+          <text class="cost-value">¥{{order.total_amount}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 订单信息 -->
+    <view class="order-info-section">
+      <view class="section-title">订单信息</view>
+      <view class="info-card">
+        <view class="info-row">
+          <text class="info-label">订单号</text>
+          <text class="info-value">#{{order.id}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">创建时间</text>
+          <text class="info-value">{{order.created_at}}</text>
+        </view>
+        <view class="info-row" wx:if="{{order.paid_at}}">
+          <text class="info-label">支付时间</text>
+          <text class="info-value">{{order.paid_at}}</text>
+        </view>
+        <view class="info-row" wx:if="{{order.wechat_payment_transaction_id}}">
+          <text class="info-label">交易号</text>
+          <text class="info-value">{{order.wechat_payment_transaction_id}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button
+        class="action-btn primary"
+        wx:if="{{isOwner && order.order_status === 'delivered'}}"
+        bindtap="onConfirmReceipt"
+      >
+        确认收货
+      </button>
+      <button
+        class="action-btn"
+        wx:if="{{!isOwner && shippingInfo && shippingInfo.shipping_label_url}}"
+        bindtap="onViewShippingLabel"
+      >
+        查看物流标签
+      </button>
+      <button class="action-btn" bindtap="onContactService">联系客服</button>
+    </view>
+  </view>
+</view>
+

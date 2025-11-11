@@ -1,0 +1,7 @@
+<!--components/error-message/error-message.wxml-->
+<view wx:if="{{show && error}}" class="error-container">
+  <view class="error-icon">⚠️</view>
+  <text class="error-message">{{error}}</text>
+  <button class="retry-btn" bindtap="onRetry">重试</button>
+</view>
+

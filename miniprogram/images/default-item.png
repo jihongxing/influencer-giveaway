@@ -1,0 +1,5 @@
+<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="150" height="150" fill="#f0f0f0"/>
+  <path d="M50 60 L100 60 L100 90 L50 90 Z" fill="#ccc"/>
+  <text x="75" y="120" font-family="Arial" font-size="14" fill="#999" text-anchor="middle">暂无图片</text>
+</svg>

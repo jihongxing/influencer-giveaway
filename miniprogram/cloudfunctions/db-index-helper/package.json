@@ -1,0 +1,9 @@
+{
+  "name": "db-index-helper",
+  "version": "1.0.0",
+  "description": "数据库索引创建助手云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

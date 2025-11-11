@@ -1,0 +1,83 @@
+<!--pages/order-status/order-status.wxml-->
+<view class="container">
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:else class="content">
+    <!-- Order Status -->
+    <view class="status-section">
+      <view class="status-card">
+        <text class="status-label">订单状态</text>
+        <text class="status-value">{{orderStatusText}}</text>
+      </view>
+      <view class="status-card">
+        <text class="status-label">支付状态</text>
+        <text class="status-value">{{paymentStatusText}}</text>
+      </view>
+    </view>
+
+    <!-- Item Info -->
+    <view class="item-section">
+      <view class="section-title">物品信息</view>
+      <view class="item-card">
+        <image class="item-image" src="{{item.photo_urls[0]}}" mode="aspectFill" />
+        <view class="item-info">
+          <text class="item-label">{{item.label || '未命名物品'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Shipping Info -->
+    <view wx:if="{{shippingInfo}}" class="shipping-section">
+      <view class="section-title">物流信息</view>
+      <view class="info-card">
+        <view class="info-row">
+          <text class="info-label">快递公司</text>
+          <text class="info-value">{{shippingInfo.shipping_provider}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">运单号</text>
+          <text class="info-value">{{shippingInfo.tracking_number}}</text>
+        </view>
+        <view wx:if="{{shippingInfo.tracking_status}}" class="info-row">
+          <text class="info-label">物流状态</text>
+          <text class="info-value">{{shippingInfo.tracking_status}}</text>
+        </view>
+        <view wx:if="{{shippingInfo.estimated_delivery_date}}" class="info-row">
+          <text class="info-label">预计送达</text>
+          <text class="info-value">{{shippingInfo.estimated_delivery_date}}</text>
+        </view>
+        <view wx:if="{{shippingInfo.shipping_label_url}}" class="info-row">
+          <button
+            class="view-label-btn"
+            bindtap="onViewShippingLabel"
+            data-order-id="{{order.order_id}}"
+          >
+            查看物流标签
+          </button>
+        </view>
+      </view>
+    </view>
+
+    <!-- Order Info -->
+    <view class="order-section">
+      <view class="section-title">订单信息</view>
+      <view class="info-card">
+        <view class="info-row">
+          <text class="info-label">订单号</text>
+          <text class="info-value">#{{order.order_id}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">订单金额</text>
+          <text class="info-value amount">¥{{order.total_amount}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">创建时间</text>
+          <text class="info-value">{{order.created_at}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+

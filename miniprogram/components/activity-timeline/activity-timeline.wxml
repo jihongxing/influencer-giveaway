@@ -1,0 +1,52 @@
+<!--components/activity-timeline/activity-timeline.wxml-->
+<view class="timeline">
+  <view wx:if="{{loading && activities.length === 0}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:elif="{{activities.length === 0}}" class="empty">
+    <text>暂无活动</text>
+  </view>
+
+  <view wx:else class="activities-list">
+    <view
+      class="activity-item"
+      wx:for="{{activities}}"
+      wx:key="activity_id"
+      data-activity="{{item}}"
+      bindtap="onActivityTap"
+    >
+      <view class="activity-header">
+        <view class="platform-badge platform-{{item.platform_type}}">
+          <text>{{item.platform_type === 'wechat' ? '微信' : item.platform_type === 'xiaohongshu' ? '小红书' : '抖音'}}</text>
+        </view>
+        <text class="date">{{item.posted_date}}</text>
+      </view>
+
+      <view wx:if="{{item.image_url}}" class="activity-image">
+        <image src="{{item.image_url}}" mode="aspectFill"></image>
+      </view>
+
+      <view wx:if="{{item.content_preview}}" class="activity-content">
+        <text>{{item.content_preview}}</text>
+      </view>
+
+      <view wx:if="{{item.link_url}}" class="activity-link">
+        <text>查看原文 →</text>
+      </view>
+    </view>
+
+    <view wx:if="{{loading && activities.length > 0}}" class="loading-more">
+      <text>加载中...</text>
+    </view>
+
+    <view wx:if="{{!hasMore && activities.length > 0}}" class="no-more">
+      <text>没有更多了</text>
+    </view>
+
+    <view wx:if="{{hasMore && !loading}}" class="load-more-btn" bindtap="onLoadMore">
+      <text>加载更多</text>
+    </view>
+  </view>
+</view>
+

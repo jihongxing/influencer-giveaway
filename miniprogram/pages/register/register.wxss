@@ -1,0 +1,261 @@
+/* pages/register/register.wxss */
+@import "/styles/design-system.wxss";
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8f9ff 0%, #f5f5f5 100%);
+  padding: 40rpx;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.title {
+  font-size: 52rpx;
+  color: #333;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 20rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #999;
+  display: block;
+}
+
+/* 步骤区域 */
+.step-section {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.step-number {
+  width: 60rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-right: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(102, 126, 234, 0.3);
+}
+
+.step-title {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+/* 用户信息卡片 */
+.user-info-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0;
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  margin-bottom: 20rpx;
+  border: 4rpx solid #667eea;
+  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.2);
+}
+
+.avatar-placeholder {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20rpx;
+}
+
+.avatar-icon {
+  font-size: 80rpx;
+  color: #999;
+}
+
+.nickname {
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 30rpx;
+}
+
+/* 授权按钮 */
+.auth-btn {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  border: none;
+  box-shadow: 0 6rpx 20rpx rgba(102, 126, 234, 0.3);
+  transition: all 0.3s;
+}
+
+.auth-btn:active {
+  transform: scale(0.98);
+}
+
+.choose-address-btn {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #07c160 0%, #05a050 100%);
+  color: #fff;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  box-shadow: 0 6rpx 20rpx rgba(7, 193, 96, 0.3);
+  transition: all 0.3s;
+}
+
+.choose-address-btn:active {
+  transform: scale(0.98);
+}
+
+.btn-icon {
+  font-size: 36rpx;
+}
+
+/* 表单项 */
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 20rpx;
+  font-weight: 500;
+}
+
+.value {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  padding: 20rpx;
+  background-color: #f9f9f9;
+  border-radius: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+.input {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 20rpx;
+  border: 2rpx solid transparent;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background-color: #f7f8fa;
+  transition: all 0.3s;
+}
+
+.input:focus {
+  background-color: #ffffff;
+  border-color: #667eea;
+}
+
+.picker {
+  height: 80rpx;
+  line-height: 80rpx;
+  padding: 0 20rpx;
+  border: 2rpx solid transparent;
+  border-radius: 12rpx;
+  color: #333;
+  background-color: #f7f8fa;
+  transition: all 0.3s;
+}
+
+/* 地址显示 */
+.address-display {
+  margin-top: 20rpx;
+  padding: 30rpx;
+  background-color: #f9f9f9;
+  border-radius: 8rpx;
+}
+
+.address-line {
+  display: flex;
+  margin-bottom: 15rpx;
+  font-size: 28rpx;
+}
+
+.address-line:last-child {
+  margin-bottom: 0;
+}
+
+.address-label {
+  color: #999;
+  min-width: 150rpx;
+}
+
+.address-value {
+  color: #333;
+  flex: 1;
+}
+
+/* 手动输入地址 */
+.manual-address {
+  margin-top: 20rpx;
+}
+
+/* 提交区域 */
+.submit-section {
+  margin-top: 60rpx;
+  padding-bottom: 40rpx;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  border: none;
+  box-shadow: 0 6rpx 20rpx rgba(102, 126, 234, 0.3);
+  transition: all 0.3s;
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+.submit-btn[disabled] {
+  background: #e0e0e0;
+  color: #999;
+  box-shadow: none;
+}

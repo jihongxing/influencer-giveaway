@@ -1,0 +1,83 @@
+<!--pages/my-orders/my-orders.wxml-->
+<view class="container">
+  <!-- Status Filter -->
+  <view class="filter-section">
+    <view
+      class="filter-item {{status === '' ? 'active' : ''}}"
+      data-status=""
+      bindtap="onStatusFilter"
+    >
+      全部
+    </view>
+    <view
+      class="filter-item {{status === 'pending' ? 'active' : ''}}"
+      data-status="pending"
+      bindtap="onStatusFilter"
+    >
+      待处理
+    </view>
+    <view
+      class="filter-item {{status === 'processing' ? 'active' : ''}}"
+      data-status="processing"
+      bindtap="onStatusFilter"
+    >
+      处理中
+    </view>
+    <view
+      class="filter-item {{status === 'shipped' ? 'active' : ''}}"
+      data-status="shipped"
+      bindtap="onStatusFilter"
+    >
+      已发货
+    </view>
+    <view
+      class="filter-item {{status === 'completed' ? 'active' : ''}}"
+      data-status="completed"
+      bindtap="onStatusFilter"
+    >
+      已完成
+    </view>
+  </view>
+
+  <!-- Orders List -->
+  <view class="orders-section">
+    <view wx:if="{{loading && orders.length === 0}}" class="loading">
+      <text>加载中...</text>
+    </view>
+
+    <view wx:elif="{{orders.length === 0}}" class="empty">
+      <text>暂无订单</text>
+    </view>
+
+    <view wx:else class="orders-list">
+      <view
+        wx:for="{{orders}}"
+        wx:key="order_id"
+        class="order-card"
+        data-order-id="{{item.order_id}}"
+        bindtap="onOrderTap"
+      >
+        <view class="order-header">
+          <text class="order-id">订单号: #{{item.order_id}}</text>
+          <text class="order-status">{{item.statusText}}</text>
+        </view>
+        <view class="order-body">
+          <text class="item-label">{{item.item_label || '物品'}}</text>
+          <text class="order-amount">¥{{item.total_amount}}</text>
+        </view>
+        <view class="order-footer">
+          <text class="order-time">{{item.created_at}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{loading && orders.length > 0}}" class="loading-more">
+      <text>加载中...</text>
+    </view>
+
+    <view wx:if="{{!hasMore && orders.length > 0}}" class="no-more">
+      <text>没有更多了</text>
+    </view>
+  </view>
+</view>
+

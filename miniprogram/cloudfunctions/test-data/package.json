@@ -1,0 +1,14 @@
+{
+  "name": "test-data",
+  "version": "1.0.0",
+  "description": "测试数据生成云函数",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}

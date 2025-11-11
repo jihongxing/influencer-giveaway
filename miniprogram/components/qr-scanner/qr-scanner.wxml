@@ -1,0 +1,7 @@
+<!--components/qr-scanner/qr-scanner.wxml-->
+<view class="qr-scanner">
+  <button class="scan-btn" bindtap="onScanQRCode" disabled="{{scanning}}">
+    {{scanning ? '扫描中...' : '扫描二维码'}}
+  </button>
+</view>
+
